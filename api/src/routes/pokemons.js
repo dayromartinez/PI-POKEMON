@@ -241,7 +241,7 @@ router.get('/pokemons/:id', async (req, res) => {
     total = 898 + cantidad_pokemones_db;
     console.log(total);
 
-    if(id < total){
+    if(id <= total){
 
         //Se hace el request a la api, ya que sabemos de antemano que el id que ingreso el usuario, pertenece
         //a los pokemones que están registrados en la api
