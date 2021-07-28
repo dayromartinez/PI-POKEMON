@@ -1,0 +1,198 @@
+.titulo {
+    color: rgb(0, 102, 255);
+    padding-left: 90px;
+    font-size: 40px;
+}
+
+.contenedor_general {
+    background-color: rgb(49, 36, 36);
+    justify-content: center;
+    margin-top: 0px;
+}
+
+.encabezado {
+    padding-block-end: 20px;
+    justify-content: center;
+    padding-left: 350px;
+    padding-top: 5px;
+}
+
+.input {
+    width: 550px;
+    font-size: 20px;
+    height: 44px;
+    border-radius: 5px;
+    border-style: groove;
+}
+
+.buscar {
+    color: rgb(11, 240, 49);
+    background: black;
+    border-radius: 10px;
+    font-size: 22px;
+    padding: 10px;
+    border-style: groove;
+}
+
+.buscar:hover {
+    background: rgb(11, 240, 49);
+    color: black;
+}
+
+.titulo_filtro {
+    color: rgb(255, 94, 0);
+    padding-top: 400px;
+    padding-left: 100px;
+}
+
+.menu_filtro {
+    font-size: 20px;
+    background-color: coral;
+}
+
+.caja_filtro {
+    padding-left: 70px;
+    padding-block-end: 30px;
+}
+
+.origen {
+    padding-left: 40px;
+    padding-block-end: 10px;
+}
+
+.checkbox {
+    padding-right: 30px;
+    font-size: 18px;
+    color:coral;
+    font-weight: bold;
+}
+
+.filtrar {
+    color: rgb(255, 94, 0);
+    background: black;
+    border-radius: 11px;
+    font-size: 16px;
+    margin-left: 111px;
+    margin-top: 10px;
+    padding: 10px;
+    border-style: groove;
+}
+
+.filtrar:hover {
+    background-color: rgb(255, 94, 0);
+    color: black;
+    font-weight: bold;
+}
+
+.contenedor_piezas {
+    display: flex;
+    justify-content: left;
+    padding-block-end: 30px;
+} 
+
+.contenedor_cards{
+    background-color: rgb(49, 36, 36);
+    width: 800px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.titulo_ordenamiento {
+    color: rgb(3, 241, 170);
+    padding-left: 80px;
+    padding-top: 400px;
+}
+
+.menu_ordenamiento{
+    font-size: 20px;
+    background-color: rgb(26, 165, 123);
+
+}
+
+.modo {
+    padding-left: 40px;
+    padding-block-end: 10px;
+}
+
+.checkbox_ordenamiento {
+    padding-left: 5px;
+    font-size: 18px;    
+    color: rgb(26, 165, 123);
+    font-weight: bold;
+}
+
+.caja_ordenamiento {
+    padding-block-end: 30px;
+    padding-left: 40px;
+}
+
+.ordenar {
+    color: rgb(3, 241, 170);
+    background: black;
+    border-radius: 11px;
+    font-size: 16px;
+    margin-left: 111px;
+    margin-top: 10px;
+    padding: 10px;
+    border-style: groove;
+}
+
+.ordenar:hover {
+    background-color: rgb(3, 241, 170);
+    color: black;
+    font-weight: bold;
+}
+
+.card {
+    background-color: rgb(245, 202, 9);
+    border-radius: 5px;
+    color: white;
+    width: 225px;
+    height: 330px;
+    text-align: center;
+    margin: 20px;
+}
+
+.boton_imagen {
+    background-color: rgb(245, 202, 9);
+    border-radius: 100px;
+    width: 200px;
+    height: 200px;
+    padding: 10px;
+    margin-top: 10px;
+    border-color:teal;
+    border-style: solid;
+}
+
+.imagen_pokemon {
+    width: 150px;
+    height: 150px;
+}
+
+.nombre_pokemon{
+    color: rgb(7, 110, 245);
+}
+
+.tipos_pokemon {
+    color: black;
+}
+
+.contenedor_paginado {
+    padding-left: 540px;
+}
+
+.boton_paginado {
+    margin: 20px;
+    font-size: 15px;
+    border-radius: 30px;
+    padding: 10px;
+    background-color: black;
+    color: rgb(94, 255, 0);
+}
+
+.boton_paginado:hover {
+    font-weight: bold;
+    background-color: rgb(94, 255, 0);
+    color: black;
+}

@@ -1,0 +1,27 @@
+.inicio {
+    background: url('../images/Pokemon1.jpg');
+    background-attachment: fixed;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0px;
+    margin: 0px;
+}
+
+.boton {
+    color: rgb(240, 167, 11);
+    background: black;
+    border-radius: 10px;
+    font-size: 25px;
+    padding: 10px;
+    border-style: groove;
+}
+
+.boton:hover {
+    background: rgb(240, 167, 11);
+    color: black;
+    font-weight: bold;
+    font-size: 28px;
+}

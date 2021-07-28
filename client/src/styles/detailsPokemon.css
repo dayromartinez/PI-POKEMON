@@ -1,0 +1,27 @@
+.card_pokemon {
+    background-color: black;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    padding-top: 50px;
+    margin-left: 400px;
+    width: 600px;
+    height: 650px;
+    
+}
+
+.contenedor_pokemon {
+    background-color: rgb(245, 202, 9);
+}
+
+.nombre_pokemon_detail{
+    color: rgb(245, 202, 9);
+}
+
+.tipos_pokemon {
+    color: rgb(235, 12, 12);
+}
+
+.stats_pokemon {
+    color: rgb(7, 110, 245);
+}

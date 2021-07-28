@@ -1,0 +1,148 @@
+.formulario {
+    background-color: rgb(7, 110, 245);
+    margin-top: 0px;
+    padding-top: 30px;
+}
+
+.titulo_formulario {
+    padding-left: 460px;
+    color: rgb(250, 164, 4);
+}
+
+.label_input_centrado {
+    margin-top: 60px;
+    margin-left: 645px;
+    color: rgb(0, 255, 242);
+}
+
+#input_formulario_centrado {
+    margin-top: 0px;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 15px;
+    margin-left: 580px;
+}
+
+.contenedor_input {
+    padding-top: 60px;
+    display: flex;
+}
+
+.label_input {
+    color: rgb(0, 255, 0);
+    padding-left: 180px;
+}
+
+#input_formulario {
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 15px;
+    margin-left: 100px;
+}
+
+.label_input_intermedio {
+    color: rgb(0, 255, 0);
+    padding-left: 345px;
+}
+
+#input_formulario_intermedio {
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 15px;
+    margin-left: 270px;
+}
+
+.label_input_derecha {
+    color: rgb(0, 255, 0);
+    padding-left: 345px;
+}
+
+#input_formulario_derecha {
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 15px;
+    margin-left: 280px;
+}
+
+.label_velocidad{
+    color: rgb(0, 255, 0);
+    padding-left: 160px;
+}
+
+.label_altura{
+    color: rgb(0, 255, 0);
+    padding-left: 345px;
+}
+
+.label_peso{
+    color: rgb(0, 255, 0);
+    padding-left: 360px;
+}
+
+.inputs_tipos {
+    background-color: rgb(0, 195, 255);
+    border-radius: 10px;
+    width: 800px;
+    margin-left: 280px;
+    margin-top: 100px;
+}
+
+.label_tipos {
+    color: rgb(0, 69, 160);
+    padding-left: 11px;
+    padding-right: 25px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.radio_tipos {
+    margin-left: 20px;
+    margin-top: 20px;
+    margin-block-end: 50px;    
+}
+
+.titulo_tipos {
+    color: rgb(255, 59, 69);
+    padding-left: 370px;
+    padding-top: 50px;
+    padding-block-end: 10px;
+    font-size: 25px;
+}
+
+.lista_radios {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.boton_crear {
+    background-color: black;
+    color: rgb(255, 174, 0);
+    font-size: 15px;
+    border-radius: 10px;
+    margin-top: 50px;
+    margin-left: 620px;
+    padding: 10px;
+    margin-block-end: 30px;
+}
+
+.boton_crear:hover{
+    background-color: rgb(255, 174, 0);
+    color: black;
+    font-weight: bold;  
+}
+
+input.danger {
+    border: 2px solid red;
+}
+
+p.danger {
+    color: rgb(255, 0, 0);
+    font-size: 12px;
+    padding-left: 580px;
+    font-weight: bold;
+}
+
+.label_error {
+    color: red;
+    font-size: 10px;
+}
