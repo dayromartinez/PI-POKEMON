@@ -12,35 +12,65 @@ const STATUS_OK = 200;
 var total = 898;
 
 //Esta funcion hace el offset de los pokemones por defecto que hay que cargar, y se invoca dentro del while de la ruta /pokemons
-var offset = async function(contador){
+var offset = async function(contador, origen){
 
-    let p = fetch(`https://pokeapi.co/api/v2/pokemon/${contador}`)
-            .then(p => p.json())
-            .then((pokemon) => {
-                
-                //Creo un objeto para cada pokemon del listado, con las propiedades que me piden para luego añadirla al arreglo de pokemones
-                let obj = {
-                    nombre: pokemon.name[0].toUpperCase() + pokemon.name.slice(1),
-                    imagen: pokemon.sprites.front_default,
-                    tipos: []
-                }
-    
-                pokemon.types.forEach(objeto => {
-                    for (const key in objeto) {
-                        if (key === "type") {
-                            obj.tipos.push(objeto[key].name[0].toUpperCase() + objeto[key].name.slice(1));
-                        }
+    if(origen === "API"){
+        let p = fetch(`https://pokeapi.co/api/v2/pokemon/${contador}`)
+                .then(p => p.json())
+                .then((pokemon) => {
+                    
+                    //Creo un objeto para cada pokemon del listado, con las propiedades que me piden para luego añadirla al arreglo de pokemones
+                    let obj = {
+                        nombre: pokemon.name[0].toUpperCase() + pokemon.name.slice(1),
+                        imagen: pokemon.sprites.other.dream_world.front_default,
+                        fuerza: pokemon.stats[1].base_stat,
+                        tipos: [],
+                        origen: "API"
                     }
-                });
-                
-                return obj;
-            })
-            .catch(error => res.status(STATUS_USER_ERROR).send(error));
+        
+                    pokemon.types.forEach(objeto => {
+                        for (const key in objeto) {
+                            if (key === "type") {
+                                obj.tipos.push(objeto[key].name[0].toUpperCase() + objeto[key].name.slice(1));
+                            }
+                        }
+                    });
+                    
+                    return obj;
+                })
+                .catch(error => res.status(STATUS_USER_ERROR).send(error));
+        
+        return p;
+
+    }else if(origen === "DB"){
+        
+        //Se realiza la consulta a la db de pokemones por ID y en caso de match, se traen los datos de dicho pokemon
+        const pokemon_db = await Pokemon.findByPk(contador, {include: Type});
+        if(pokemon_db !== null){
+
+            let detalle_pokemon = {
+                nombre: pokemon_db.dataValues.nombre,
+                imagen: pokemon_db.dataValues.imagen,
+                fuerza: pokemon_db.dataValues.fuerza,
+                tipos: [],
+                origen: "DB"
+            }
     
-    return p;
+            pokemon_db.dataValues.types.forEach(objeto => {
+                for (const key in objeto.dataValues) {
+                    if (key === "nombre") {
+                        detalle_pokemon.tipos.push(objeto[key]);
+                    }
+                }
+            });
+            return detalle_pokemon;
+        }else{
+            return pokemon_db;
+        }
+    }
 }
 
-//Esta funcion busca a un pokemon dentro de la api con base en nombres
+//Esta funcion busca a un pokemon dentro de la api con base en nombres y ID's
 var busqueda = async function(nombre, id){
 
     if(nombre !== ""){
@@ -53,14 +83,15 @@ var busqueda = async function(nombre, id){
             let detalle_pokemon = {
                 id: pokemon.id,
                 nombre: pokemon.name[0].toUpperCase() + pokemon.name.slice(1),
-                imagen: pokemon.sprites.front_default,
+                imagen: pokemon.sprites.other.dream_world.front_default,
                 tipos: [],
                 vitalidad: pokemon.stats[0].base_stat,
                 fuerza: pokemon.stats[1].base_stat,
                 defensa: pokemon.stats[2].base_stat,
                 velocidad: pokemon.stats[5].base_stat,
                 altura: pokemon.height,
-                peso: pokemon.weight
+                peso: pokemon.weight,
+                origen: "API"
             }
 
             pokemon.types.forEach(objeto => {
@@ -86,14 +117,15 @@ var busqueda = async function(nombre, id){
                 detalle_pokemon = {
                     id: id,
                     nombre: pokemon.name[0].toUpperCase() + pokemon.name.slice(1),
-                    imagen: pokemon.sprites.front_default,
+                    imagen: pokemon.sprites.other.dream_world.front_default,
                     tipos: [],
                     vitalidad: pokemon.stats[0].base_stat,
                     fuerza: pokemon.stats[1].base_stat,
                     defensa: pokemon.stats[2].base_stat,
                     velocidad: pokemon.stats[5].base_stat,
                     altura: pokemon.height,
-                    peso: pokemon.weight
+                    peso: pokemon.weight,
+                    origen: "API"
                 }
 
                 pokemon.types.forEach(objeto => {
@@ -132,7 +164,9 @@ var busqueda_db = async function(nombre, id, Pokemon, Type){
                 velocidad: pokemon_db.dataValues.velocidad,
                 altura: pokemon_db.dataValues.altura,
                 peso: pokemon_db.dataValues.peso,
-                tipos: []
+                imagen: pokemon_db.dataValues.imagen,
+                tipos: [],
+                origen: "DB"
             }
     
             pokemon_db.dataValues.types.forEach(objeto => {
@@ -163,7 +197,9 @@ var busqueda_db = async function(nombre, id, Pokemon, Type){
                 velocidad: pokemon_db.dataValues.velocidad,
                 altura: pokemon_db.dataValues.altura,
                 peso: pokemon_db.dataValues.peso,
-                tipos: []
+                imagen: pokemon_db.dataValues.imagen,
+                tipos: [],
+                origen: "DB"
             }
     
             pokemon_db.dataValues.types.forEach(objeto => {
@@ -183,19 +219,42 @@ var busqueda_db = async function(nombre, id, Pokemon, Type){
 //----------------------------------- Lista Pokemones ----------------------------------------------------
 router.get('/pokemons', async function(req, res) {
 
-    //Obtener un listado de los primeros 12 pokemons desde pokeapi
+    //Obtener un listado con 40 pokemones
     //Debe devolver solo los datos necesarios para la ruta principal
     const { name } = req.query;
 
     if(name === undefined){
 
-        //Hago el enunciado de la lista de 12 pokemones por default
+        //En primera instancia contabilizo la cantidad de pokemones en la db
+        const p_db = await Pokemon.findAll({
+            attributes: [
+                [conn.fn('COUNT', conn.col('id')), 'n_pokemones'],
+            ]
+        });
+
+        let c_db = 899;
+        let cantidad_pokemones_db = Number(p_db[0].dataValues.n_pokemones);  
+        
+        //Hago el enunciado de la lista de 40 pokemones por default
         while(contador < 41){
-            pokemons.push(await offset(contador));
+            //En la lista por defecto primero cargo los pokemones que hay en la db
+            while(c_db <= cantidad_pokemones_db + 898){
+                let p_db = await offset(c_db, "DB");
+                pokemons.push(p_db);
+                contador++;
+                c_db++;
+                console.log(p_db);
+            }
+
+            //Luego voy con los pokemones de la API, hasta llegar al límite de la lista (40)
+            pokemons.push(await offset(contador, "API"));
             contador++;
         }
+
         res.status(STATUS_OK).json(pokemons);
-        
+        contador = 1;
+        pokemons = [];
+
     }else{
         
         //---------------------------------------------- Busqueda de pokemon por nombre (query), tanto en db como en api -----------------------
@@ -215,7 +274,8 @@ router.get('/pokemons', async function(req, res) {
                 //Respuesta API
                 res.status(STATUS_OK).json(detalle_pokemon);
             } catch (error) {
-                res.status(STATUS_USER_ERROR).send("El pokemon que intenta buscar no existe, inténtelo de nuevo.");
+                let err = "El pokemon que intenta buscar no existe, inténtelo de nuevo.";
+                res.status(STATUS_USER_ERROR).json({err});
             }
         }
     }
@@ -257,7 +317,8 @@ router.get('/pokemons/:id', async (req, res) => {
             res.status(STATUS_OK).json(detalle_pokemon);
         }
     }else{
-        res.status(STATUS_USER_ERROR).send("El pokemon que intenta buscar no existe, inténtelo de nuevo.");
+        let err = "El pokemon que intenta buscar no existe, inténtelo de nuevo.";
+        res.status(STATUS_USER_ERROR).json({err});
     }
 })
 
@@ -267,44 +328,52 @@ router.post('/pokemons', async (req, res) => {
     //Crea un pokemon en la base de datos
 
     const { name, vitalidad, fuerza, defensa, velocidad, altura, peso, tipos, imagen} = req.body;
+    console.log(name, vitalidad, fuerza, defensa, velocidad, altura, peso, tipos, imagen);
     let nombre = name[0].toUpperCase() + name.slice(1);
 
-    const p_db = await Pokemon.findAll({
-        attributes: [
-            [conn.fn('COUNT', conn.col('id')), 'n_pokemones'],
-        ]
-    });
+    try {
 
-    //Se consulta la cantidad de pokemones en la db y se suma al total de pokemones en la api
-    let cantidad_pokemones_db = Number(p_db[0].dataValues.n_pokemones);  
-    total = 898 + cantidad_pokemones_db;
-    console.log(total);
-
-    const [pokemon, created] = await Pokemon.findOrCreate({
-        where: { nombre: nombre },
-        defaults: {
-            id: total + 1,
-            nombre: nombre,
-            vitalidad: vitalidad,
-            fuerza: fuerza,
-            defensa: defensa,
-            velocidad: velocidad,
-            altura: altura,
-            peso: peso
-        }
-    });
+        const p_db = await Pokemon.findAll({
+            attributes: [
+                [conn.fn('COUNT', conn.col('id')), 'n_pokemones'],
+            ]
+        });
     
-    tipos.forEach(async (tipo) => {
-
-        let t =  tipo[0].toUpperCase() + tipo.slice(1);
-        const tipo_db = await Type.findOne({where: { nombre: t }});
-        if(tipo_db !== null){
-            pokemon.setTypes(tipo_db.id);
-        }else{
-            res.status(STATUS_USER_ERROR).send("Uno o varios de los tipos de este pokemon es inexistente. Inténtelo de nuevo.");
-        }
-    })
-    res.status(STATUS_OK).json(pokemon);
+        //Se consulta la cantidad de pokemones en la db y se suma al total de pokemones en la api
+        let cantidad_pokemones_db = Number(p_db[0].dataValues.n_pokemones);  
+        total = 898 + cantidad_pokemones_db;
+        console.log(total);
+    
+        const [pokemon, created] = await Pokemon.findOrCreate({
+            where: { nombre: nombre },
+            defaults: {
+                id: total + 1,
+                nombre: nombre,
+                vitalidad: vitalidad,
+                fuerza: fuerza,
+                defensa: defensa,
+                velocidad: velocidad,
+                altura: altura,
+                peso: peso,
+                imagen: imagen
+            }
+        });
+        
+        tipos.forEach(async (tipo) => {
+    
+            let t =  tipo[0].toUpperCase() + tipo.slice(1);
+            const tipo_db = await Type.findOne({where: { nombre: t }});
+            if(tipo_db !== null){
+                pokemon.setTypes(tipo_db.id);
+            }else{
+                res.status(STATUS_USER_ERROR).send("Uno o varios de los tipos de este pokemon es inexistente. Inténtelo de nuevo.");
+            }
+        })
+        res.status(STATUS_OK).json(pokemon);
+        
+    } catch (error) {
+        console.log(error);
+    }
 })
 
 

@@ -23,21 +23,32 @@ var offset_db = async function(contador){
 
             //Se añade un nuevo tipo de pokemon a la db, traido desde la api
             const nuevo_tipo = await Type.create(obj_tipo);
-            return obj_tipo;
+            return obj_tipo.nombre;
         })
         .catch(error => res.status(STATUS_USER_ERROR).send(error));
     return tipo_pi;
 }
 
 router.get('/types', async(req, res) => {
+    
+    const tipo_db = await Type.findAll({
+        attributes: ['nombre']
+    });
 
-    //Hago la peticion a la api y voy trayendo cada uno de los tipos de pokemon, los almaceno en un arreglo y una vez hecho esto, lo guardo en la db de tipos
-    while (contador < total){
-        tipos.push(await offset_db(contador));
-        contador++;
+    if(tipo_db.length === 0){
+        //Hago la peticion a la api y voy trayendo cada uno de los tipos de pokemon, los almaceno en un arreglo y una vez hecho esto, lo guardo en la db de tipos
+        while (contador < total){
+            tipos.push(await offset_db(contador));
+            contador++;
+        }
+        res.status(STATUS_OK).json(tipos);
+
+    }else{
+        tipos = tipo_db.map((tipo) => {
+            return tipo.dataValues.nombre;
+        })
+        res.status(STATUS_OK).json(tipos);
     }
-    console.log(tipos);
-    res.status(STATUS_OK).json(tipos)
 })
 
 module.exports = router;
