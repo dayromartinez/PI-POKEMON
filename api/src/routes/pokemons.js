@@ -248,13 +248,13 @@ router.get('/pokemons', async function(req, res) {
 
             //Luego voy con los pokemones de la API, hasta llegar al límite de la lista (40)
             pokemons.push(await offset(contador, "API"));
-            contador++;
+            contador++; 
         }
 
         res.status(STATUS_OK).json(pokemons);
         contador = 1;
         pokemons = [];
-
+    
     }else{
         
         //---------------------------------------------- Busqueda de pokemon por nombre (query), tanto en db como en api -----------------------
