@@ -175,7 +175,7 @@
 }
 
 .tipos_pokemon {
-    color: black;
+    color: rgb(255, 22, 53);
 }
 
 .contenedor_paginado {
@@ -194,5 +194,20 @@
 .boton_paginado:hover {
     font-weight: bold;
     background-color: rgb(94, 255, 0);
+    color: black;
+}
+
+.reset {
+    margin: 50px;
+    font-size: 20px;
+    border-radius: 30px;
+    padding: 10px;
+    background-color: black;
+    color: rgb(255, 0, 0);
+}
+
+.reset:hover {
+    font-weight: bold;
+    background-color: rgb(255, 0, 0);
     color: black;
 }

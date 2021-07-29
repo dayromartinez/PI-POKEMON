@@ -1,27 +1,48 @@
+
 .card_pokemon {
-    background-color: black;
-    border-radius: 5px;
+    background-image: url(../images/pokemon12.jpg);
+    border-radius: 10px;
     color: white;
     text-align: center;
     padding-top: 50px;
-    margin-left: 400px;
+    margin-left: 400px; 
     width: 600px;
-    height: 650px;
+    height: 660px;
     
 }
 
 .contenedor_pokemon {
     background-color: rgb(245, 202, 9);
+    padding-top: 50px;
+    padding-block-end: 200px;
 }
 
 .nombre_pokemon_detail{
     color: rgb(245, 202, 9);
 }
 
-.tipos_pokemon {
+.tipos_pokemon_detail {
     color: rgb(235, 12, 12);
+    padding-top: 30px;
+    padding-block-end: 50px;
 }
 
 .stats_pokemon {
-    color: rgb(7, 110, 245);
+    color: rgb(7, 245, 245);
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.titulo_detail{
+    color:rgb(7, 110, 245);
+    padding-block-end: 50px;
+    padding-left: 530px;
+    font-weight: bold;
+}
+
+.contenedor_stats {
+    padding-top: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }

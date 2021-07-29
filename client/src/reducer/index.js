@@ -88,6 +88,7 @@ const rootReducer = (state = initialState, action) => {
             };
         
         case FILTER_POKEMONS:
+            console.log("action_filtro: ",action.payload.pokemones);
             return {
                 ...state,
                 filtrado_pokemons: action.payload.pokemones.filter((pokemon) => {
